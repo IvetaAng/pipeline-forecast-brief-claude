@@ -38,3 +38,28 @@ def to_markdown(b):
                      " | ".join(f"**{t}** {x}" for t, x in f["flags"]))
         L.append("")
     return "\n".join(L)
+
+
+def sections(md):
+    """Split answer-key markdown into blocks (rep headings, change list, flag list); each block = sorted lines."""
+    out, key, block = {}, "top", []
+    for line in md.splitlines():
+        if line.startswith("## "):
+            out[key] = sorted(block); key, block = line, []
+        elif line in ("Changes since last week:", "Flagged deals:"):
+            out[key] = sorted(block); key, block = key.split(" | ")[0] + " | " + line, []
+        elif line.strip():
+            block.append(line)
+    out[key] = sorted(block)
+    return out
+
+
+def compare(actual_md, expected_md):
+    """Returns a list of differences (empty = identical apart from order inside lists)."""
+    a, e = sections(actual_md), sections(expected_md)
+    diffs = []
+    for key in sorted(set(a) | set(e)):
+        missing = sorted(set(e.get(key, [])) - set(a.get(key, [])))
+        extra = sorted(set(a.get(key, [])) - set(e.get(key, [])))
+        diffs += [f"{key}: missing  {x}" for x in missing] + [f"{key}: unexpected {x}" for x in extra]
+    return diffs

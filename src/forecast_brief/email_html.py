@@ -228,12 +228,13 @@ def subject(b):
     return f'{b["subject_prefix"]}Forecast brief {b["as_of"]} · {b["quarter"].split()[-1]}: {b["days_left"]} days left'
 
 
-def render(b, talking_points=None):
-    """b = brief dict; talking_points = {rep name: [str, ...]} (optional)."""
+def render(b, talking_points=None, check=None):
+    """b = brief dict; talking_points = {rep name: [str, ...]} (optional); check = answer-key result for the TEST banner."""
     talking_points = talking_points or {}
     q = b["quarter"].split()[-1]
     need = ", ".join(f'{s["stage"]} ~{s["won_deals_need_days"]}d' for s in b["stage_medians"])
-    test = box("<b>TEST MODE.</b> Nothing was written to HubSpot or Drive.", AMBER, 12) if b["test_mode"] else ""
+    note = f" Answer key check: {escape(check)}." if check else ""
+    test = box(f"<b>TEST MODE.</b> Nothing was written to HubSpot or Drive.{note}", AMBER, 12) if b["test_mode"] else ""
     header = (f'<div style="{FONT}font-size:13px;color:{MUTED};padding:8px 4px 10px 4px;line-height:1.7;">'
               f'<b style="color:{TEXT};">{q} forecast brief · week of {b["as_of"]}</b><br>'
               f'Compared with {b["last_snapshot"]}</div>')
@@ -263,6 +264,7 @@ def main(argv=None):
     ap.add_argument("--brief", required=True)
     ap.add_argument("--talking-points", help='JSON: {"Anna Keller": ["...", "..."], ...}')
     ap.add_argument("--html", default="email.html")
+    ap.add_argument("--check", help="answer-key check result shown in the TEST banner, e.g. PASS")
     a = ap.parse_args(argv)
     with open(a.brief, encoding="utf-8") as fh:
         b = json.load(fh)
@@ -271,6 +273,6 @@ def main(argv=None):
         with open(a.talking_points, encoding="utf-8") as fh:
             tp = json.load(fh)
     with open(a.html, "w", encoding="utf-8") as fh:
-        fh.write(render(b, tp))
+        fh.write(render(b, tp, a.check))
     print(subject(b))
     return 0

@@ -14,7 +14,7 @@ sys.path.insert(0, os.path.join(ROOT, "src"))
 
 from forecast_brief.brief import build  # noqa: E402
 from forecast_brief.load import load_deals, load_quotas, load_snapshot, parse_dmy  # noqa: E402
-from forecast_brief.report import to_markdown  # noqa: E402
+from forecast_brief.report import compare, sections, to_markdown  # noqa: E402
 
 FIX = os.path.join(HERE, "fixtures")
 
@@ -29,20 +29,6 @@ def demo_brief():
     return build(deals, quotas, snap_date, snapshot, settings, as_of, True, warnings), settings
 
 
-def sections(md):
-    """Split markdown into blocks at headings / 'xxx:' sub-headings; each block = sorted lines."""
-    out, key, block = {}, "top", []
-    for line in md.splitlines():
-        if line.startswith("## "):
-            out[key] = sorted(block); key, block = line, []
-        elif line in ("Changes since last week:", "Flagged deals:"):
-            out[key] = sorted(block); key, block = key.split(" | ")[0] + " | " + line, []
-        elif line.strip():
-            block.append(line)
-    out[key] = sorted(block)
-    return out
-
-
 class AnswerKey(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -55,6 +41,8 @@ class AnswerKey(unittest.TestCase):
         self.assertEqual(sorted(expected), sorted(actual))
         for k in expected:
             self.assertEqual(expected[k], actual[k], k)
+        with open(os.path.join(HERE, "expected", "answer_key_16.11.2026.md"), encoding="utf-8") as fh:
+            self.assertEqual(compare(to_markdown(self.brief), fh.read()), [])
 
     def test_top3_to_discuss(self):
         top = {r["rep"]: [(t["deal"].split(" - ")[0], t["reason"]) for t in r["top3_to_discuss"]] for r in self.brief["reps"]}
