@@ -44,7 +44,7 @@ changes. Use ONLY numbers that appear in brief.json; never calculate new ones. N
 python3 render_email.py --brief /tmp/brief/brief.json --talking-points /tmp/brief/talking_points.json \
   --html /tmp/brief/email.html [--check PASS|FAIL]
 ```
-The command prints the subject. Gmail `send_message`: to `ia.uzunova@gmail.com`, subject as printed,
+The command prints the subject. Gmail `send_message`: to the recipient named in the scheduled task's prompt, subject as printed,
 `htmlBody` = the full content of email.html (unchanged), `body` = one plain-text line:
 "Forecast brief as of <date>. Open in an HTML-capable mail client."
 
@@ -57,7 +57,7 @@ The command prints the subject. Gmail `send_message`: to `ia.uzunova@gmail.com`,
   write nothing else. Only fills gaps, see `src/forecast_brief/writeback.py`.
 
 ## 8. If a step fails
-Send a short plain-text email to ia.uzunova@gmail.com, subject "[FAILED] Forecast brief <date>", saying which step
+Send a short plain-text email to the same recipient, subject "[FAILED] Forecast brief <date>", saying which step
 failed and the error. Do not send a partial brief.
 
 ## 9. Run summary
