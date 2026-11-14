@@ -8,7 +8,7 @@ Rebuild of the n8n version. Full write-up follows in Phase 5.
 - [x] Phase 0: setup
 - [x] Phase 1: demo data (HubSpot import, quotas, snapshot 09.11.2026)
 - [x] Phase 2: analysis script, validated against the answer key as of 16.11.2026
-- [ ] Phase 3: HTML email template
+- [x] Phase 3: HTML email template (preview in `docs/preview/`)
 - [ ] Phase 4: scheduled task (Monday 07:00 Europe/Zurich)
 - [ ] Phase 5: README, public repo
 
@@ -18,7 +18,9 @@ Rebuild of the n8n version. Full write-up follows in Phase 5.
    - HubSpot: one deal search (`sales_rep` in the reps from the Quotas sheet), about 2 pages of 200
    - Google Drive: Quotas sheet as CSV, newest `snapshot_*.csv` before the run date
 2. `run_brief.py` does all calculations (deterministic, Python standard library only)
-3. Claude writes talking points from the flags, renders the email, sends it
+3. Claude writes 2–3 talking points per rep from the flags (`talking_points.json`), then
+   `python3 render_email.py --brief brief.json --talking-points talking_points.json --html email.html`
+   prints the subject and writes the email, which Claude sends with the Gmail connector
 4. Unless in test mode: Claude saves this week's snapshot to Drive and writes the updates back to HubSpot
 
 ```
@@ -40,4 +42,5 @@ python3 -m unittest discover -s tests -v
 ```
 
 - `tests/test_answer_key.py`: the full demo run must reproduce `tests/expected/answer_key_16.11.2026.md` line by line
+- `tests/test_email.py`: Gmail-safe HTML (fills via `bgcolor`, no CSS backgrounds, no float/flex/grid), every flagged deal and change linked
 - `tests/test_rules.py`: time zone, quarter boundaries, scope, flags, waterfall, write-back on synthetic data
