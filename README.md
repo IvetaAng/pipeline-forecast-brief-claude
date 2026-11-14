@@ -42,5 +42,5 @@ python3 -m unittest discover -s tests -v
 ```
 
 - `tests/test_answer_key.py`: the full demo run must reproduce `tests/expected/answer_key_16.11.2026.md` line by line
-- `tests/test_email.py`: Gmail-safe HTML (fills via `bgcolor`, no CSS backgrounds, no float/flex/grid), every flagged deal and change linked
+- `tests/test_email.py`: Gmail-safe HTML (fills via `bgcolor`, no CSS backgrounds, no float/flex/grid), every flagged deal and change linked; layout follows the agreed mockup v3
 - `tests/test_rules.py`: time zone, quarter boundaries, scope, flags, waterfall, write-back on synthetic data

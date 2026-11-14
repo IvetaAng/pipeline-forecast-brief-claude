@@ -1,4 +1,4 @@
-"""Render brief.json as the weekly HTML email.
+"""Render brief.json as the weekly HTML email (layout = agreed mockup v3).
 
 Gmail rules (tested 14.11.2026): the Gmail connector strips every CSS background /
 background-color at send time, so ALL fills use the HTML bgcolor attribute on table/td.
@@ -12,34 +12,47 @@ GREEN = ("#EAF3DE", "#3B6D11")
 AMBER = ("#FAEEDA", "#854F0B")
 RED = ("#FCEBEB", "#A32D2D")
 GREY = ("#F1EFE8", "#5F5E5A")
+BLUE = ("#E6F1FB", "#185FA5")
 STATUS = {"green": GREEN, "amber": AMBER, "red": RED, "quota reached": GREEN}
-PAGE, CARD, BORDER, TEXT, MUTED, LINK = "#F5F4F0", "#FFFFFF", "#E5E3DC", "#2C2C2A", "#73726C", "#185FA5"
-BAR_FILL, BAR_EMPTY = "#639922", "#E5E3DC"
+BAR = {"green": "#639922", "amber": "#BA7517", "red": "#E24B4A"}
+PAGE, CARD, BORDER, STRONG, TEXT, MUTED, LINK = "#F5F4F0", "#FFFFFF", "#E5E3DC", "#C9C7BE", "#2C2C2A", "#73726C", "#185FA5"
+BAR_EMPTY = "#E5E3DC"
 FONT = "font-family:Arial,Helvetica,sans-serif;"
+TABLE = 'role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"'
+LANDING_GREEN, LANDING_AMBER = 85, 70          # bookings bar colour by expected landing % of quota
 
 
 def k(x):
     return f"{x / 1000:,.0f}k" if abs(x) < 1e6 else f"{x / 1e6:.2f}M"
 
 
+def name(deal):
+    """'Lemaniatech - Planning suite' -> 'Lemaniatech · Planning suite'"""
+    return deal.replace(" - ", " · ", 1)
+
+
+def short_date(dmy):
+    return dmy[:5]                                   # 18.12.2026 -> 18.12
+
+
 def tag_colour(tag):
-    if tag.startswith(("Unlikely", "Close date passed")):
+    if tag.startswith(("Commit stalled", "Best case stalled", "Pushed", "Close date passed")):
         return RED
-    if tag.startswith("Category above"):
-        return GREY
-    return AMBER                     # stalled earlier, Pushed, Slipped, Stalled in stage
-
-
-CHANGE_COLOUR = {"Won": GREEN, "Upgraded": GREEN, "Amount increased": GREEN, "Lost": RED, "Downgraded": AMBER,
-                 "Amount cut": AMBER, "Reassigned": GREY, "New": GREY, "Stage moved": GREY}
+    if tag.startswith(("Unlikely", "Category above", "Slipped", "Stalled")):
+        return AMBER
+    return GREY
 
 
 def change_colour(kind):
-    if kind.startswith("Pushed out"):
-        return RED
-    if kind.startswith("Pulled into"):
+    if kind in ("Won", "Upgraded", "Amount increased") or kind.startswith("Pulled into"):
         return GREEN
-    return CHANGE_COLOUR.get(kind, GREY)
+    if kind == "Lost" or kind.startswith("Pushed out"):
+        return RED
+    return GREY
+
+
+def landing_status(pct):
+    return "green" if pct >= LANDING_GREEN else "amber" if pct >= LANDING_AMBER else "red"
 
 
 def link(text, url, bold=True):
@@ -50,134 +63,165 @@ def link(text, url, bold=True):
 def pill(text, colour):
     fill, fg = colour
     return (f'<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="display:inline-table;'
-            f'margin:0 4px 4px 0;"><tr><td bgcolor="{fill}" style="{FONT}font-size:11px;color:{fg};'
-            f'padding:2px 7px;border-radius:4px;white-space:nowrap;">{escape(text)}</td></tr></table>')
+            f'vertical-align:middle;margin:0 4px 2px 0;"><tr><td bgcolor="{fill}" style="{FONT}font-size:11px;'
+            f'color:{fg};padding:1px 6px;border-radius:4px;white-space:nowrap;">{escape(text)}</td></tr></table>')
 
 
-def section(title):
-    return (f'<tr><td style="{FONT}font-size:12px;color:{MUTED};padding:18px 0 6px 0;text-transform:uppercase;'
-            f'letter-spacing:0.5px;">{escape(title)}</td></tr>')
+def sec(title):
+    return f'<div style="{FONT}font-size:12px;color:{MUTED};padding:14px 0 4px 0;">{escape(title)}</div>'
 
 
-def progress_bar(pct):
+def box(html, colour, size=13):
+    fill, fg = colour
+    return (f'<table {TABLE} style="margin-top:8px;"><tr><td bgcolor="{fill}" style="{FONT}font-size:{size}px;'
+            f'color:{fg};padding:7px 10px;border-radius:6px;">{html}</td></tr></table>')
+
+
+def progress_bar(pct, status):
     pct = max(0, min(100, pct or 0))
-    filled = f'<td width="{pct}%" bgcolor="{BAR_FILL}" height="8" style="font-size:0;line-height:0;">&nbsp;</td>' if pct else ""
-    empty = (f'<td width="{100 - pct}%" bgcolor="{BAR_EMPTY}" height="8" style="font-size:0;line-height:0;">&nbsp;</td>'
-             if pct < 100 else "")
-    return (f'<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" '
-            f'style="border-radius:4px;"><tr>{filled}{empty}</tr></table>')
+    cells = ""
+    if pct:
+        cells += f'<td width="{pct}%" bgcolor="{BAR[status]}" height="8" style="font-size:0;line-height:0;">&nbsp;</td>'
+    if pct < 100:
+        cells += f'<td width="{100 - pct}%" bgcolor="{BAR_EMPTY}" height="8" style="font-size:0;line-height:0;">&nbsp;</td>'
+    return f'<table {TABLE}><tr>{cells}</tr></table>'
 
 
-def coverage_tile(c, remaining):
-    fill, fg = STATUS[c["status"]]
-    right = f'{c["x"]:.2f}×' if c["x"] is not None else "quota reached"
-    return (f'<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" '
-            f'style="margin-bottom:4px;border-radius:6px;"><tr>'
-            f'<td bgcolor="{fill}" style="{FONT}font-size:13px;color:{fg};padding:6px 10px;border-radius:6px 0 0 6px;">'
-            f'{escape(c["category"])} {k(c["amount"])} <span style="font-size:11px;">· {c["deals"]} deals</span></td>'
+def coverage_tiles(cov):
+    """Three single-line tiles side by side: label left, multiple right."""
+    cells = []
+    for i, c in enumerate(cov):
+        fill, fg = STATUS[c["status"]]
+        right = f'{c["x"]:.2f}×' if c["x"] is not None else "met"
+        pad = "0 4px 0 0" if i == 0 else "0 0 0 4px" if i == 2 else "0 2px"
+        cells.append(
+            f'<td width="33%" valign="top" style="padding:{pad};"><table {TABLE}><tr>'
+            f'<td bgcolor="{fill}" style="{FONT}font-size:12px;color:{fg};padding:5px 0 5px 10px;'
+            f'border-radius:6px 0 0 6px;">{escape(c["category"])} {k(c["amount"])}</td>'
             f'<td bgcolor="{fill}" align="right" style="{FONT}font-size:17px;font-weight:bold;color:{fg};'
-            f'padding:6px 10px;border-radius:0 6px 6px 0;white-space:nowrap;">{right}</td></tr></table>')
+            f'padding:5px 10px 5px 4px;border-radius:0 6px 6px 0;white-space:nowrap;">{right}</td>'
+            f'</tr></table></td>')
+    return f'<table {TABLE}><tr>{"".join(cells)}</tr></table>'
 
 
-def flag_lines(flags):
-    pills = "".join(pill(t, tag_colour(t)) for t, _ in flags)
-    texts = "".join(f'<div style="{FONT}font-size:12px;color:{MUTED};padding-top:2px;">'
-                    f'<b style="color:{TEXT};">{escape(t)}:</b> {escape(x)}</div>' for t, x in flags)
-    return pills + texts
+def changes_grid(changes):
+    """Change items in two columns to save vertical space."""
+    items = [f'{pill(c["type"], change_colour(c["type"]))} {link(name(c["deal"]), c["url"])} '
+             f'<span style="color:{MUTED};">{escape(c["detail"])}</span>' for c in changes]
+    rows = []
+    for i in range(0, len(items), 2):
+        pair = items[i:i + 2] + [""] * (2 - len(items[i:i + 2]))
+        rows.append("<tr>" + "".join(
+            f'<td width="50%" valign="top" style="{FONT}font-size:13px;color:{TEXT};'
+            f'padding:4px {"12px" if j == 0 else "0"} 4px 0;">{it}</td>' for j, it in enumerate(pair)) + "</tr>")
+    return f'<table {TABLE}>{"".join(rows)}</table>'
 
 
-def deal_meta(f):
-    return f'{k(f["amount"])} · {escape(f["stage"])} · {escape(f["category"] or "no category")} · close {f["close"]}'
+def reason_lines(flags):
+    if len(flags) == 1:
+        return f'<div style="color:{MUTED};font-size:12px;padding-top:2px;">{escape(flags[0][1])}</div>'
+    return "".join(f'<div style="color:{MUTED};font-size:12px;padding-top:2px;">{escape(t)}: {escape(x)}</div>'
+                   for t, x in flags)
+
+
+def top_deals(top):
+    head = (f'<tr><td style="{FONT}font-size:12px;color:{MUTED};padding:0 0 2px 0;">Deal and reason</td>'
+            f'<td width="60" align="right" style="{FONT}font-size:12px;color:{MUTED};">Amount</td>'
+            f'<td width="50" align="right" style="{FONT}font-size:12px;color:{MUTED};">Close</td></tr>')
+    rows = []
+    for t in top:
+        tags = "".join(pill(tag, tag_colour(tag)) for tag, _ in t["flags"])
+        cell = f'border-top:1px solid {BORDER};padding:7px 0;{FONT}font-size:13px;color:{TEXT};'
+        rows.append(f'<tr><td valign="top" style="{cell}padding-right:8px;">{link(name(t["deal"]), t["url"])} '
+                    f'{tags}{reason_lines(t["flags"])}</td>'
+                    f'<td valign="top" align="right" style="{cell}">{k(t["amount"])}</td>'
+                    f'<td valign="top" align="right" style="{cell}">{short_date(t["close"])}</td></tr>')
+    return f'<table {TABLE}>{head}{"".join(rows)}</table>'
+
+
+def talking_box(points):
+    items = "".join(f'<div style="padding-top:3px;">{i}. {escape(p)}</div>' for i, p in enumerate(points, 1))
+    return box(f'<div style="font-weight:bold;">Talking points for the call</div>{items}', BLUE)
 
 
 def rep_block(r, points):
-    c0 = r["coverage"]
-    rows = [f'<tr><td style="{FONT}font-size:20px;font-weight:bold;color:{TEXT};padding:0 0 2px 0;">{escape(r["rep"])}</td></tr>',
-            f'<tr><td style="{FONT}font-size:12px;color:{MUTED};padding-bottom:10px;">'
-            f'Quota {k(r["quota"])} · {r["quarter"]} · {r["days_left"]} days left</td></tr>']
-
-    # bookings to target
-    won_names = ", ".join(link(w["deal"].split(" - ")[0], w["url"], bold=False) for w in r["won_deals"]) or "none yet"
-    rows += [section("Bookings to target"),
-             f'<tr><td style="{FONT}font-size:14px;color:{TEXT};padding-bottom:6px;"><span style="font-size:22px;'
-             f'font-weight:bold;">{k(r["won"])}</span> of {k(r["quota"])} won ({r["bookings_pct"]}%) · '
-             f'{k(max(r["remaining"], 0))} to go</td></tr>',
-             f'<tr><td style="padding-bottom:4px;">{progress_bar(r["bookings_pct"])}</td></tr>',
-             f'<tr><td style="{FONT}font-size:12px;color:{MUTED};">Won: {won_names}</td></tr>']
-
-    # coverage on remaining target
-    rows += [section(f'Coverage on remaining {k(max(r["remaining"], 0))}')]
-    rows += [f'<tr><td>{coverage_tile(c, r["remaining"])}</td></tr>' for c in c0]
-    rows.append(f'<tr><td style="{FONT}font-size:13px;color:{TEXT};padding-top:6px;">Expected landing (won + Commit): '
-                f'<b>{k(r["expected_landing"])}</b> = {r["expected_landing_pct"]}% of quota</td></tr>')
+    first = r["rep"].split()[0]
     conc = r["concentration"]
+    landing_pct = r["expected_landing_pct"] or 0
+    html = [
+        f'<div style="border-top:1px solid {STRONG};margin-top:16px;padding-top:14px;">',
+        f'<table {TABLE}><tr><td style="{FONT}font-size:16px;font-weight:bold;color:{TEXT};">{escape(r["rep"])}</td>'
+        f'<td align="right" style="{FONT}font-size:12px;color:{MUTED};">Quota {k(r["quota"])}</td></tr></table>',
+        f'<table {TABLE} style="margin:8px 0 4px 0;"><tr><td style="{FONT}font-size:13px;color:{TEXT};">'
+        f'Bookings to target: <b>{k(r["won"])} · {r["bookings_pct"]}%</b></td>'
+        f'<td align="right" style="{FONT}font-size:13px;color:{MUTED};">{k(max(r["remaining"], 0))} remaining</td>'
+        f'</tr></table>',
+        progress_bar(r["bookings_pct"], landing_status(landing_pct)),
+        sec(f'Coverage on remaining {k(max(r["remaining"], 0))}'),
+        coverage_tiles(r["coverage"]),
+    ]
+    landing = f'Expected landing: {k(r["expected_landing"])} · {landing_pct}% of quota'
+    if not conc["flag"]:
+        landing += f' · top 3 deals {conc["pct"]}% of Best case'
+    html.append(f'<div style="{FONT}font-size:13px;color:{MUTED};padding-top:6px;">{landing}</div>')
     if conc["flag"]:
-        names = ", ".join(f'{link(t["deal"].split(" - ")[0], t["url"], bold=False)} {k(t["amount"])}' for t in conc["top3"])
-        rows.append(f'<tr><td style="padding-top:6px;"><table role="presentation" width="100%" cellpadding="0" '
-                    f'cellspacing="0" border="0"><tr><td bgcolor="{AMBER[0]}" style="{FONT}font-size:12px;color:{AMBER[1]};'
-                    f'padding:6px 10px;border-radius:6px;"><b>Concentration:</b> top 3 deals are {conc["pct"]}% of '
-                    f'Best case ({names})</td></tr></table></td></tr>')
+        best = r["coverage"][1]["amount"]
+        top_sum = sum(t["amount"] for t in conc["top3"])
+        names = ", ".join(f'{escape(t["deal"].split(" - ")[0])} {k(t["amount"])}' for t in conc["top3"])
+        html.append(box(f'<b>Deal concentration:</b> top 3 deals are {conc["pct"]}% of Best case '
+                        f'({k(top_sum)} of {k(best)}): {names}', RED))
 
-    # what changed since last week
-    wf = ", ".join(f'{n.replace("_", " ")} {v / 1000:+,.0f}k' for n, v in r["waterfall"].items())
-    rows += [section("What changed since last week"),
-             f'<tr><td style="{FONT}font-size:12px;color:{MUTED};padding-bottom:6px;">{r["quarter"].split()[-1]} pipeline '
-             f'{k(r["pipeline_last_week"])} → {k(r["pipeline_now"])}{": " + wf if wf else ""}</td></tr>']
-    if r["changes"]:
-        ch = "".join(
-            f'<tr><td width="120" valign="top" style="padding:5px 8px 5px 0;white-space:nowrap;border-top:1px solid {BORDER};">'
-            f'{pill(c["type"], change_colour(c["type"]))}</td>'
-            f'<td valign="top" style="{FONT}font-size:13px;color:{TEXT};padding:5px 0;border-top:1px solid {BORDER};">'
-            f'{link(c["deal"].split(" - ")[0], c["url"])} <span style="color:{MUTED};">{escape(c["deal"].split(" - ", 1)[-1])}'
-            f' · {escape(c["detail"])}</span></td></tr>' for c in r["changes"])
-        rows.append(f'<tr><td><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">{ch}'
-                    f'</table></td></tr>')
-    else:
-        rows.append(f'<tr><td style="{FONT}font-size:13px;color:{MUTED};">No changes.</td></tr>')
+    html += [sec("What changed since last week"),
+             f'<div style="{FONT}font-size:13px;color:{TEXT};padding-bottom:4px;">{r["quarter"].split()[-1]} pipeline '
+             f'{k(r["pipeline_last_week"])} → <b>{k(r["pipeline_now"])}</b></div>',
+             changes_grid(r["changes"]) if r["changes"]
+             else f'<div style="{FONT}font-size:13px;color:{MUTED};">No changes.</div>']
 
-    # top 3 deals to discuss
     if r["top3_to_discuss"]:
-        rows.append(section("Top 3 deals to discuss"))
-        for t in r["top3_to_discuss"]:
-            rows.append(f'<tr><td style="padding:6px 0 8px 0;border-top:1px solid {BORDER};">'
-                        f'<div style="{FONT}font-size:14px;color:{TEXT};padding-bottom:4px;">{link(t["deal"], t["url"])} '
-                        f'<span style="font-size:12px;color:{MUTED};">{deal_meta(t)}</span></div>'
-                        f'{flag_lines(t["flags"])}</td></tr>')
-
-    # talking points (written by Claude from the flags; numbers come from the script)
+        html += [sec("Top deals to discuss"), top_deals(r["top3_to_discuss"])]
+    if r["flagged_deals"]:
+        html.append(f'<div style="{FONT}font-size:12px;color:{MUTED};padding-top:4px;">All '
+                    f'{len(r["flagged_deals"])} flagged deals for {escape(first)} are in the appendix below.</div>')
     if points:
-        items = "".join(f'<li style="padding-bottom:4px;">{escape(p)}</li>' for p in points)
-        rows += [section("Talking points"),
-                 f'<tr><td style="{FONT}font-size:13px;color:{TEXT};"><ul style="margin:0;padding-left:18px;">'
-                 f'{items}</ul></td></tr>']
-
-    inner = "".join(rows)
-    return (f'<tr><td style="padding:0 0 16px 0;"><table role="presentation" width="100%" cellpadding="0" '
-            f'cellspacing="0" border="0" style="border:1px solid {BORDER};border-radius:10px;"><tr>'
-            f'<td bgcolor="{CARD}" style="padding:18px 20px;border-radius:10px;"><table role="presentation" '
-            f'width="100%" cellpadding="0" cellspacing="0" border="0">{inner}</table></td></tr></table></td></tr>')
+        html.append(talking_box(points))
+    html.append("</div>")
+    return "".join(html)
 
 
 def appendix(b):
-    rows = []
+    parts = []
     for r in b["reps"]:
         if not r["flagged_deals"]:
             continue
-        rows.append(f'<tr><td style="{FONT}font-size:14px;font-weight:bold;color:{TEXT};padding:12px 0 4px 0;">'
-                    f'{escape(r["rep"])} · {len(r["flagged_deals"])} flagged deals</td></tr>')
-        for f in r["flagged_deals"]:
-            rows.append(f'<tr><td style="padding:6px 0 8px 0;border-top:1px solid {BORDER};">'
-                        f'<div style="{FONT}font-size:13px;color:{TEXT};padding-bottom:4px;">{link(f["deal"], f["url"])} '
-                        f'<span style="font-size:12px;color:{MUTED};">{deal_meta(f)}</span></div>'
-                        f'{flag_lines(f["flags"])}</td></tr>')
-    if not rows:
+        rows = "".join(
+            f'<tr><td valign="top" style="{FONT}font-size:13px;padding:6px 8px 6px 0;border-top:1px solid {BORDER};">'
+            f'{link(name(f["deal"]), f["url"], bold=False)}</td>'
+            f'<td width="150" valign="top" style="{FONT}font-size:12px;color:{MUTED};padding:6px 8px 6px 0;'
+            f'border-top:1px solid {BORDER};">{escape(", ".join(t for t, _ in f["flags"]))}</td>'
+            f'<td width="50" valign="top" align="right" style="{FONT}font-size:13px;color:{TEXT};padding:6px 0;'
+            f'border-top:1px solid {BORDER};">{k(f["amount"])}</td></tr>' for f in r["flagged_deals"])
+        parts.append(sec(f'{r["rep"]} · {len(r["flagged_deals"])} deals') + f'<table {TABLE}>{rows}</table>')
+    if not parts:
         return ""
-    inner = "".join(rows)
-    return (f'<tr><td style="padding:0 0 16px 0;"><table role="presentation" width="100%" cellpadding="0" '
-            f'cellspacing="0" border="0" style="border:1px solid {BORDER};border-radius:10px;"><tr>'
-            f'<td bgcolor="{CARD}" style="padding:18px 20px;border-radius:10px;"><table role="presentation" '
-            f'width="100%" cellpadding="0" cellspacing="0" border="0">{section("Appendix: all flagged deals")}{inner}'
-            f'</table></td></tr></table></td></tr>')
+    return (f'<div style="border-top:1px solid {STRONG};margin-top:18px;padding-top:14px;">'
+            f'<div style="{FONT}font-size:16px;font-weight:bold;color:{TEXT};">Appendix: all flagged deals</div>'
+            f'{"".join(parts)}</div>')
+
+
+def team_summary(b):
+    quota = sum(r["quota"] for r in b["reps"])
+    won = sum(r["won"] for r in b["reps"])
+    landing = sum(r["expected_landing"] for r in b["reps"])
+    q = b["quarter"].split()[-1]
+    stats = [(f"Team quota {q}", k(quota), ""), ("Won so far", k(won), f'{round(100 * won / quota)}%' if quota else ""),
+             ("Remaining target", k(max(quota - won, 0)), ""), ("Days left", str(b["days_left"]), "")]
+    cells = "".join(
+        f'<td width="25%" valign="top" style="padding-right:8px;"><div style="{FONT}font-size:12px;color:{MUTED};">{lbl}</div>'
+        f'<div style="{FONT}font-size:22px;color:{TEXT};">{val} '
+        f'<span style="font-size:13px;color:{MUTED};">{extra}</span></div></td>' for lbl, val, extra in stats)
+    return (f'<table {TABLE}><tr>{cells}</tr></table>'
+            f'<div style="{FONT}font-size:13px;color:{MUTED};padding-top:6px;">Expected landing (won + Commit): '
+            f'{k(landing)} · {round(100 * landing / quota) if quota else 0}% of quota</div>')
 
 
 def subject(b):
@@ -187,29 +231,28 @@ def subject(b):
 def render(b, talking_points=None):
     """b = brief dict; talking_points = {rep name: [str, ...]} (optional)."""
     talking_points = talking_points or {}
-    need = " · ".join(f'{s["stage"]} ~{s["won_deals_need_days"]}d' for s in b["stage_medians"])
-    won_n = max(s["won_deals_counted"] for s in b["stage_medians"])
-    test = (f'<tr><td style="padding:0 0 12px 0;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" '
-            f'border="0"><tr><td bgcolor="{AMBER[0]}" style="{FONT}font-size:12px;color:{AMBER[1]};padding:8px 12px;'
-            f'border-radius:6px;"><b>TEST MODE.</b> Nothing was written to HubSpot or Drive.</td></tr></table>'
-            f'</td></tr>') if b["test_mode"] else ""
-    header = (f'<tr><td style="padding:4px 0 14px 0;"><div style="{FONT}font-size:22px;font-weight:bold;color:{TEXT};">'
-              f'Forecast brief</div><div style="{FONT}font-size:13px;color:{MUTED};padding-top:2px;">'
-              f'As of {b["as_of"]} · {b["quarter"]} ends {b["quarter_end"]} · {b["days_left"]} days left · '
-              f'compared with {b["last_snapshot"]}</div></td></tr>')
+    q = b["quarter"].split()[-1]
+    need = ", ".join(f'{s["stage"]} ~{s["won_deals_need_days"]}d' for s in b["stage_medians"])
+    test = box("<b>TEST MODE.</b> Nothing was written to HubSpot or Drive.", AMBER, 12) if b["test_mode"] else ""
+    header = (f'<div style="{FONT}font-size:13px;color:{MUTED};padding:8px 4px 10px 4px;line-height:1.7;">'
+              f'<b style="color:{TEXT};">{q} forecast brief · week of {b["as_of"]}</b><br>'
+              f'Compared with {b["last_snapshot"]}</div>')
     reps = "".join(rep_block(r, talking_points.get(r["rep"])) for r in b["reps"])
-    footer = (f'<tr><td style="{FONT}font-size:11px;color:{MUTED};padding:4px 4px 0 4px;line-height:1.5;">'
-              f'Won deals need, from entering a stage to signature (median of {won_n} won deals): {need}.<br>'
-              f'Coverage colours: Commit green ≥1.0×, amber 0.7–1.0×; Best case green ≥1.5×, amber 1.0–1.5×; '
-              f'Pipeline green ≥3×, amber 2–3×; red below. Best case includes Commit.<br>'
-              f'Numbers are calculated from HubSpot by a fixed script; talking points are written by Claude from '
-              f'the flags.</td></tr>')
+    footer = (f'<div style="{FONT}font-size:11px;color:{MUTED};margin-top:16px;border-top:1px solid {BORDER};'
+              f'padding-top:8px;line-height:1.5;">Coverage: Commit green ≥1.0×, amber 0.7–1.0×. Best case green ≥1.5×, '
+              f'amber 1.0–1.5×. Pipeline green ≥3×, amber 2–3×. Red below. Best case includes Commit. Concentration '
+              f'flag when top 3 deals exceed 60% of Best case. Won deals need from entering a stage to signature: '
+              f'{need} (medians from won deals, recalculated each run). Numbers by rules, talking points by Claude. '
+              f'Deal names link to HubSpot.</div>')
+    card = (f'<table {TABLE} style="border:1px solid {BORDER};border-radius:12px;"><tr><td bgcolor="{CARD}" '
+            f'style="padding:16px 20px;border-radius:12px;">{team_summary(b)}{reps}{appendix(b)}{footer}'
+            f'</td></tr></table>')
     return (f'<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" '
             f'content="width=device-width,initial-scale=1"><title>{escape(subject(b))}</title></head>'
-            f'<body style="margin:0;padding:0;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" '
-            f'border="0" bgcolor="{PAGE}"><tr><td align="center" bgcolor="{PAGE}" style="padding:20px 10px;">'
-            f'<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:640px;">'
-            f'{test}{header}{reps}{appendix(b)}{footer}</table></td></tr></table></body></html>')
+            f'<body style="margin:0;padding:0;"><table {TABLE} bgcolor="{PAGE}"><tr><td align="center" bgcolor="{PAGE}" '
+            f'style="padding:16px 8px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" '
+            f'border="0" style="max-width:680px;"><tr><td>{test}{header}{card}'
+            f'</td></tr></table></td></tr></table></body></html>')
 
 
 def main(argv=None):

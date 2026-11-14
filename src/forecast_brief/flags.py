@@ -43,8 +43,8 @@ def deal_flags(d, as_of, medians, need, settings, quarter_name):
         if a and b and (b - a).days > rules["earlierStageSlowFactor"] * medians[k]:
             slow.append((names[k], (b - a).days, medians[k]))
     if len(slow) >= rules["earlierStageSlowMinCount"] and d["cat"] in ("Commit", "Best case"):
-        out.append((f"{d['cat']} stalled earlier", f"{names[si]}, {d['cat']}. Took " +
-                    " and ".join(f"{n}d in {s} (+{n - m:g} vs median)" for s, n, m in slow)))
+        out.append((f"{d['cat']} stalled earlier", f"{names[si]}, {d['cat']}. " +
+                    " and ".join(f"{s} +{n - m:g}d" for s, n, m in slow) + " over median"))
 
     if d["pushes"] >= rules["pushedMinCount"]:
         rates = settings["pushWinRates"]

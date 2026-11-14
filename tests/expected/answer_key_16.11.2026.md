@@ -29,7 +29,7 @@ Flagged deals:
 - Sharos Textil - NetMap (40k, close 15.12.2026): **Unlikely to close in Q4** Qualification. 29d to close date, won deals need ~111d. 10d over stage median
 - Rheinmech - Expansion pilot (160k, close 15.12.2026): **Unlikely to close in Q4** Solution Validation. 29d to close date, won deals need ~75d. 21d over stage median
 - Brenta Trasporti - Process automation (145k, close 18.12.2026): **Unlikely to close in Q4** Discovery. 32d to close date, won deals need ~96d. 19d over stage median
-- Lemaniatech - Planning suite (185k, close 18.12.2026): **Commit stalled earlier** Contract Negotiation, Commit. Took 49d in Discovery (+28 vs median) and 68d in Solution Validation (+37 vs median) | **Stalled in stage** Contract Negotiation. 45d in stage, 25d over stage median
+- Lemaniatech - Planning suite (185k, close 18.12.2026): **Commit stalled earlier** Contract Negotiation, Commit. Discovery +28d and Solution Validation +37d over median | **Stalled in stage** Contract Negotiation. 45d in stage, 25d over stage median
 - Seelandsysteme - Planning suite (60k, close 18.12.2026): **Unlikely to close in Q4** Qualification. 32d to close date, won deals need ~111d
 - Rigimech - Expansion pilot (130k, close 22.12.2026): **Pushed 4×** Best case. Close date moved 4 times, 92 days in total. Deals pushed this often won 11% | **Unlikely to close in Q4** Business Case. 36d to close date, won deals need ~44d
 - Murtechnik - Planning suite (115k, close 30.12.2026): **Unlikely to close in Q4** Solution Validation. 44d to close date, won deals need ~75d. 21d over stage median
