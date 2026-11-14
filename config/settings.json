@@ -1,6 +1,6 @@
 {
   "asOfDate": "16.11.2026",
-  "testMode": true,
+  "testMode": false,
   "timezone": "Europe/Zurich",
   "portalId": 149538010,
   "dealUrl": "https://app-eu1.hubspot.com/contacts/149538010/record/0-3/{id}",
