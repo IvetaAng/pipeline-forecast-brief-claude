@@ -1,0 +1,39 @@
+{
+  "asOfDate": "16.11.2026",
+  "testMode": true,
+  "timezone": "Europe/Zurich",
+  "portalId": 149538010,
+  "dealUrl": "https://app-eu1.hubspot.com/contacts/149538010/record/0-3/{id}",
+  "pipeline": "default",
+  "wonStage": "closedwon",
+  "lostStage": "closedlost",
+  "stages": [
+    {"id": "appointmentscheduled",  "name": "Qualification",        "movedProperty": "moved_to_qualification",        "defaultCategory": "Pipeline"},
+    {"id": "qualifiedtobuy",        "name": "Discovery",            "movedProperty": "moved_to_discovery",            "defaultCategory": "Pipeline"},
+    {"id": "presentationscheduled", "name": "Solution Validation",  "movedProperty": "moved_to_solution_validation",  "defaultCategory": "Best case"},
+    {"id": "decisionmakerboughtin", "name": "Business Case",        "movedProperty": "moved_to_business_case",        "defaultCategory": "Best case"},
+    {"id": "contractsent",          "name": "Contract Negotiation", "movedProperty": "moved_to_contract_negotiation", "defaultCategory": "Commit"}
+  ],
+  "categories": {
+    "PIPELINE": "Pipeline",
+    "BEST_CASE": "Best case",
+    "COMMIT": "Commit",
+    "CLOSED": "Closed",
+    "OMIT": "Omit"
+  },
+  "coverageThresholds": {
+    "Commit":    {"green": 1.0, "amber": 0.7},
+    "Best case": {"green": 1.5, "amber": 1.0},
+    "Pipeline":  {"green": 3.0, "amber": 2.0}
+  },
+  "concentrationShare": 0.6,
+  "flagRules": {
+    "earlierStageSlowFactor": 1.5,
+    "earlierStageSlowMinCount": 2,
+    "pushedMinCount": 3,
+    "slippedMinDays": 60,
+    "stalledOverMedianFactor": 0.5
+  },
+  "pushWinRates": {"3": "44%", "4+": "11%"},
+  "top3Priority": ["stalled earlier", "Pushed", "Category above stage", "Unlikely to close"]
+}

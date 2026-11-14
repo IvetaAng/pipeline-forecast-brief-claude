@@ -1,0 +1,151 @@
+snapshot_date,record_id,deal_name,sales_rep,deal_stage,forecast_category,amount,close_date,close_date_push_count,total_days_slipped
+09.11.2026,526553572600,Lemaniamech - Platform rollout,Anna Keller,Qualification,Pipeline,70000,30.09.2026,0,0
+09.11.2026,526580549862,Brienzsysteme - Forecasting module,Anna Keller,Contract Negotiation,Commit,120000,27.11.2026,1,45
+09.11.2026,526631829711,Bernercargo - Integration project,Anna Keller,Contract Negotiation,Commit,170000,11.12.2026,0,0
+09.11.2026,526631829712,Rheinmech - Expansion pilot,Anna Keller,Solution Validation,Pipeline,160000,15.12.2026,0,0
+09.11.2026,529896522971,Sharos Textil - NetMap,Anna Keller,Qualification,Pipeline,40000,15.12.2026,0,0
+09.11.2026,526569774272,Brenta Trasporti - Process automation,Anna Keller,Discovery,Pipeline,145000,18.12.2026,0,0
+09.11.2026,526479088860,Lemaniatech - Planning suite,Anna Keller,Contract Negotiation,Commit,185000,18.12.2026,1,58
+09.11.2026,526523174111,Spreetechnik - Analytics suite,Anna Keller,Contract Negotiation,Commit,95000,18.12.2026,1,57
+09.11.2026,526468249826,Rigimech - Expansion pilot,Anna Keller,Business Case,Best case,130000,22.12.2026,4,92
+09.11.2026,526628278474,Isartrans - Integration project,Anna Keller,Solution Validation,Best case,110000,29.12.2026,0,0
+09.11.2026,526489826529,Murtechnik - Planning suite,Anna Keller,Solution Validation,Best case,115000,30.12.2026,0,0
+09.11.2026,526510513387,Helvetinvest - Reporting upgrade,Anna Keller,Discovery,Pipeline,290000,31.12.2026,0,0
+09.11.2026,526631829714,Kesslerfinanz - Planning suite,Anna Keller,Business Case,Best case,107500,15.01.2027,0,0
+09.11.2026,526505279737,Wallistrans - Reporting upgrade,Anna Keller,Solution Validation,Best case,114000,21.01.2027,1,143
+09.11.2026,526425016512,Moseltech - Data migration,Anna Keller,Business Case,Best case,84000,27.01.2027,0,0
+09.11.2026,526596561125,Thames Labs - Data migration,Anna Keller,Solution Validation,Pipeline,169500,27.01.2027,0,0
+09.11.2026,526582522097,Traunlogistik - Planning suite,Anna Keller,Solution Validation,Best case,139000,28.01.2027,0,0
+09.11.2026,529979304165,Helvettech - UserSense,Anna Keller,Qualification,,57600,29.01.2027,0,0
+09.11.2026,526473633011,Tyne Data - Enterprise licence,Anna Keller,Discovery,Pipeline,80000,29.01.2027,1,45
+09.11.2026,526510513388,Brienzfracht - Planning suite,Anna Keller,Business Case,Best case,157000,31.01.2027,0,0
+09.11.2026,526626643138,Garda Meccanica - Data migration,Anna Keller,Solution Validation,Best case,141500,31.01.2027,0,0
+09.11.2026,526521138404,Keystone Data - Platform rollout,Anna Keller,Solution Validation,Best case,188000,31.01.2027,0,0
+09.11.2026,526453799146,Ruhrcargo - Pricing engine,Anna Keller,Business Case,Best case,200000,31.01.2027,0,0
+09.11.2026,526584127690,Murtrans - Analytics suite,Anna Keller,Solution Validation,Best case,54500,01.02.2027,0,0
+09.11.2026,526506753214,Rheintech - Reporting upgrade,Anna Keller,Discovery,Pipeline,187500,01.02.2027,0,0
+09.11.2026,526493433029,Silverline Partners - Pricing engine,Anna Keller,Business Case,Best case,72500,01.02.2027,0,0
+09.11.2026,526448453835,Hudson Logistics - Reporting upgrade,Anna Keller,Solution Validation,Best case,132500,03.02.2027,0,0
+09.11.2026,526562825411,Sihltrans - Process automation,Anna Keller,Discovery,Pipeline,106500,04.02.2027,0,0
+09.11.2026,526477205717,Rigitech - Forecasting module,Anna Keller,Business Case,Best case,157500,05.02.2027,0,0
+09.11.2026,526491627765,Sihlmaschinen - Integration project,Anna Keller,Solution Validation,Best case,108500,08.02.2027,0,0
+09.11.2026,526425016513,Bernerfracht - Platform rollout,Anna Keller,Qualification,Pipeline,108500,10.02.2027,0,0
+09.11.2026,526448453836,Harrow Data - Analytics suite,Anna Keller,Qualification,Pipeline,76000,10.02.2027,0,0
+09.11.2026,526635405530,Norddata - Integration project,Anna Keller,Discovery,Pipeline,73500,11.02.2027,0,0
+09.11.2026,526521138406,Alpentechnik - Enterprise licence,Anna Keller,Contract Negotiation,Commit,246500,13.02.2027,0,0
+09.11.2026,526489826528,Zugerfinanz - Integration project,Anna Keller,Business Case,Best case,178500,15.02.2027,0,0
+09.11.2026,526585927871,Summit Logistics - Platform rollout,Anna Keller,Qualification,Pipeline,95500,16.02.2027,0,0
+09.11.2026,526425016515,Bluewater Labs - Expansion pilot,Anna Keller,Qualification,Pipeline,138000,25.02.2027,0,0
+09.11.2026,526497043658,Allgäutechnik - Reporting upgrade,Anna Keller,Discovery,Pipeline,120000,26.02.2027,1,67
+09.11.2026,526448453837,Grazerfracht - Analytics suite,Anna Keller,Solution Validation,Best case,155000,26.02.2027,0,0
+09.11.2026,526635405532,Mainwerke - Data migration,Anna Keller,Discovery,Pipeline,100000,26.02.2027,1,88
+09.11.2026,526482619631,Ashford Transport - Forecasting module,Anna Keller,Discovery,Pipeline,55000,28.02.2027,0,0
+09.11.2026,526452043970,Kesslertech - Analytics suite,Anna Keller,Discovery,Pipeline,88500,28.02.2027,0,0
+09.11.2026,526626643137,Medway Financial - Analytics suite,Anna Keller,Solution Validation,Best case,87000,28.02.2027,0,0
+09.11.2026,526457399496,Mercia Logistics - Data migration,Anna Keller,Discovery,Pipeline,245500,28.02.2027,0,0
+09.11.2026,526628278472,Taunusmech - Expansion pilot,Anna Keller,Discovery,Pipeline,78000,28.02.2027,1,136
+09.11.2026,526457399497,Thurinvest - Enterprise licence,Anna Keller,Qualification,Pipeline,105500,28.02.2027,0,0
+09.11.2026,526580549861,Vorarlbergcargo - Platform rollout,Anna Keller,Qualification,Pipeline,116500,28.02.2027,0,0
+09.11.2026,526631829713,Grazerdata - Data migration,Anna Keller,Solution Validation,Best case,108000,01.03.2027,0,0
+09.11.2026,526531935466,Kingsbridge Industries - Data migration,Anna Keller,Business Case,Best case,77000,01.03.2027,0,0
+09.11.2026,526473633012,Saentismaschinen - Reporting upgrade,Anna Keller,Solution Validation,Best case,187500,01.03.2027,0,0
+09.11.2026,526628278473,Arlbergmaschinen - Data migration,Anna Keller,Qualification,Pipeline,155500,05.03.2027,0,0
+09.11.2026,526555636960,Bernerkapital - Integration project,Anna Keller,Qualification,Pipeline,221000,08.03.2027,0,0
+09.11.2026,526585927870,Jurainvest - Process automation,Anna Keller,Qualification,Pipeline,92000,13.03.2027,0,0
+09.11.2026,526519587060,Schwarzwaldtech - Forecasting module,Anna Keller,Discovery,Pipeline,102500,19.03.2027,0,0
+09.11.2026,526495027409,Saentiscargo - Data migration,Anna Keller,Discovery,Pipeline,80500,22.03.2027,0,0
+09.11.2026,526582522099,Wallisfracht - Operations platform,Anna Keller,Discovery,Pipeline,79000,26.03.2027,0,0
+09.11.2026,526489826527,Linthkapital - Platform rollout,Anna Keller,Discovery,Pipeline,171000,29.03.2027,0,0
+09.11.2026,526551952579,Bodenseekapital - Analytics suite,Anna Keller,Discovery,Pipeline,56000,31.03.2027,0,0
+09.11.2026,526452043972,Clyde Labs - Integration project,Anna Keller,Qualification,Pipeline,97000,31.03.2027,0,0
+09.11.2026,526508615881,Cotswold Freight - Enterprise licence,Anna Keller,Qualification,Pipeline,196000,31.03.2027,0,0
+09.11.2026,526479088861,Isarlogistik - Platform rollout,Anna Keller,Qualification,Pipeline,130000,31.03.2027,0,0
+09.11.2026,526508615882,Isarmech - Analytics suite,Anna Keller,Qualification,Pipeline,62000,31.03.2027,0,0
+09.11.2026,526444724449,Keystone Transport - Process automation,Anna Keller,Qualification,Pipeline,75000,31.03.2027,1,90
+09.11.2026,526444724448,Ligure Capitale - Planning suite,Anna Keller,Discovery,Pipeline,145500,31.03.2027,0,0
+09.11.2026,526453799144,Lombarda Trasporti - Analytics suite,Anna Keller,Discovery,Pipeline,125000,31.03.2027,1,99
+09.11.2026,526523174110,Moselsysteme - Pricing engine,Anna Keller,Qualification,Pipeline,137000,31.03.2027,0,0
+09.11.2026,526493433027,Northgate Software - Expansion pilot,Anna Keller,Discovery,Pipeline,140000,31.03.2027,1,90
+09.11.2026,526562825412,Rheintrans - Expansion pilot,Anna Keller,Qualification,Pipeline,85000,31.03.2027,0,0
+09.11.2026,526524962020,Saentismech - Operations platform,Anna Keller,Qualification,Pipeline,69000,31.03.2027,0,0
+09.11.2026,526432232639,Steirerinvest - Integration project,Anna Keller,Discovery,Pipeline,120000,31.03.2027,0,0
+09.11.2026,526495027407,Thames Transport - Data migration,Anna Keller,Qualification,Pipeline,151500,31.03.2027,0,0
+09.11.2026,526448453839,Thurkapital - Process automation,Anna Keller,Discovery,Pipeline,175500,31.03.2027,0,0
+09.11.2026,526580549859,Tirolsoft - Forecasting module,Anna Keller,Qualification,Pipeline,54500,31.03.2027,0,0
+09.11.2026,526519587059,Tiroltechnik - Enterprise licence,Anna Keller,Solution Validation,Pipeline,257000,31.03.2027,1,175
+09.11.2026,526623352042,Cotswold Capital - Analytics suite,Anna Keller,Discovery,Pipeline,175000,01.04.2027,1,167
+09.11.2026,526557382902,Wesertechnik - Enterprise licence,Anna Keller,Discovery,Pipeline,104500,01.04.2027,0,0
+09.11.2026,526442920174,Tyne Machinery - Analytics suite,Anna Keller,Qualification,Pipeline,223000,12.04.2027,0,0
+09.11.2026,526491627764,Granite Machinery - Data migration,Anna Keller,Qualification,Pipeline,81500,20.04.2027,0,0
+09.11.2026,526480955635,Allgäutrans - Analytics suite,Anna Keller,Qualification,Pipeline,50000,30.04.2027,0,0
+09.11.2026,526469916895,Brienzkapital - Data migration,Anna Keller,Qualification,Pipeline,66500,30.04.2027,0,0
+09.11.2026,526486285502,Eifeltech - Analytics suite,Anna Keller,Qualification,Pipeline,95000,30.04.2027,1,120
+09.11.2026,526555636962,Emmentrans - Analytics suite,Anna Keller,Qualification,Pipeline,225500,30.04.2027,0,0
+09.11.2026,526498833627,Gotthardtechnik - Operations platform,Anna Keller,Qualification,Pipeline,136000,30.04.2027,0,0
+09.11.2026,526480955637,Helvetfinanz - Integration project,Anna Keller,Discovery,Pipeline,115000,30.04.2027,0,0
+09.11.2026,526521138405,Taunuskapital - Integration project,Anna Keller,Qualification,Pipeline,120000,30.04.2027,0,0
+09.11.2026,526623352046,Wallissoft - Enterprise licence,Anna Keller,Qualification,Pipeline,118000,30.04.2027,0,0
+09.11.2026,526426859734,Allgäufinanz - Data migration,Marco Rossi,Solution Validation,Best case,95000,25.09.2026,1,31
+09.11.2026,526425016514,Arlbergcargo - Expansion pilot,Marco Rossi,Discovery,Best case,110000,30.09.2026,0,0
+09.11.2026,526489826526,Ruhrmaschinen - Reporting upgrade,Marco Rossi,Solution Validation,Best case,135000,30.11.2026,3,70
+09.11.2026,526550155480,Toggenfracht - Enterprise licence,Marco Rossi,Contract Negotiation,Commit,210000,30.11.2026,4,104
+09.11.2026,526591335630,Schwarzwalddata - Planning suite,Marco Rossi,Business Case,Commit,160000,04.12.2026,4,96
+09.11.2026,526550155481,Reusstech - Platform rollout,Marco Rossi,Solution Validation,Best case,140000,15.12.2026,2,75
+09.11.2026,526531935462,Tirolwerke - Forecasting module,Marco Rossi,Solution Validation,Pipeline,85000,16.12.2026,2,75
+09.11.2026,526480955636,Aaretech - Process automation,Marco Rossi,Business Case,Best case,120000,18.12.2026,3,75
+09.11.2026,526591335631,Kesslerlogistik - Planning suite,Marco Rossi,Discovery,Best case,180000,18.12.2026,1,60
+09.11.2026,526471824603,Vorarlbergsysteme - Reporting upgrade,Marco Rossi,Discovery,Pipeline,65000,21.12.2026,1,63
+09.11.2026,526553573563,Traunwerke - Planning suite,Marco Rossi,Discovery,Best case,120000,22.12.2026,2,80
+09.11.2026,526448453838,Linthmech - Reporting upgrade,Marco Rossi,Discovery,Best case,90000,23.12.2026,1,65
+09.11.2026,526623352047,Gotthardcargo - Pricing engine,Marco Rossi,Qualification,Best case,95000,31.12.2026,0,0
+09.11.2026,526531935465,Tirrena Finanza - Enterprise licence,Marco Rossi,Solution Validation,Best case,121000,18.01.2027,0,0
+09.11.2026,526508615880,Brienzcargo - Planning suite,Marco Rossi,Solution Validation,Best case,111000,31.01.2027,0,0
+09.11.2026,526453799145,Trauntechnik - Reporting upgrade,Marco Rossi,Solution Validation,Best case,54500,31.01.2027,1,113
+09.11.2026,526475425006,Brienzlogistik - Process automation,Marco Rossi,Contract Negotiation,Commit,127000,01.02.2027,0,0
+09.11.2026,526452043969,Clyde Data - Process automation,Marco Rossi,Solution Validation,Best case,201500,01.02.2027,0,0
+09.11.2026,526479088859,Limmatmech - Forecasting module,Marco Rossi,Discovery,Pipeline,119500,01.02.2027,1,114
+09.11.2026,526551952580,Wallisinvest - Reporting upgrade,Marco Rossi,Business Case,Best case,56500,01.02.2027,3,161
+09.11.2026,526524962021,Zugerfracht - Expansion pilot,Marco Rossi,Contract Negotiation,Commit,112000,01.02.2027,1,123
+09.11.2026,526468249827,Engadinsoft - Expansion pilot,Marco Rossi,Discovery,Pipeline,56000,08.02.2027,0,0
+09.11.2026,526432232640,Steirerkapital - Data migration,Marco Rossi,Qualification,Pipeline,166500,09.02.2027,0,0
+09.11.2026,526489826530,Toscana Macchine - Pricing engine,Marco Rossi,Solution Validation,Best case,100000,09.02.2027,0,0
+09.11.2026,526475425005,Spreetrans - Process automation,Marco Rossi,Contract Negotiation,Commit,192500,12.02.2027,1,145
+09.11.2026,526553572601,Emmentech - Reporting upgrade,Marco Rossi,Solution Validation,Best case,132000,16.02.2027,0,0
+09.11.2026,526623352044,Hudson Transport - Forecasting module,Marco Rossi,Solution Validation,Best case,185000,19.02.2027,0,0
+09.11.2026,526524962019,Grazerkapital - Data migration,Marco Rossi,Contract Negotiation,Commit,90500,22.02.2027,0,0
+09.11.2026,526555636961,Weserdata - Analytics suite,Marco Rossi,Qualification,Pipeline,130500,25.02.2027,0,0
+09.11.2026,526469916894,Bernermech - Pricing engine,Marco Rossi,Business Case,Best case,175000,26.02.2027,3,179
+09.11.2026,526493433028,Cascade Transport - Analytics suite,Marco Rossi,Solution Validation,Best case,207500,26.02.2027,0,0
+09.11.2026,526560984272,Allgäudata - Analytics suite,Marco Rossi,Qualification,Pipeline,84500,28.02.2027,0,0
+09.11.2026,526619628781,Engadinfracht - Forecasting module,Marco Rossi,Qualification,Pipeline,125000,28.02.2027,0,0
+09.11.2026,526635405531,Glarnercargo - Analytics suite,Marco Rossi,Qualification,Pipeline,123000,28.02.2027,0,0
+09.11.2026,526446642417,Saentisinvest - Expansion pilot,Marco Rossi,Business Case,Commit,56500,28.02.2027,0,0
+09.11.2026,526503348454,Aarecargo - Integration project,Marco Rossi,Discovery,Pipeline,74000,01.03.2027,0,0
+09.11.2026,526585927869,Aaretrans - Forecasting module,Marco Rossi,Contract Negotiation,Commit,212500,01.03.2027,1,187
+09.11.2026,526562825413,Brienztrans - Platform rollout,Marco Rossi,Qualification,Pipeline,79500,01.03.2027,0,0
+09.11.2026,526442920173,Donaufracht - Forecasting module,Marco Rossi,Business Case,Best case,95500,01.03.2027,0,0
+09.11.2026,526468249825,Helvetsysteme - Integration project,Marco Rossi,Business Case,Commit,90500,01.03.2027,1,154
+09.11.2026,526531935463,Kingsbridge Capital - Planning suite,Marco Rossi,Qualification,Pipeline,106000,01.03.2027,0,0
+09.11.2026,526628278475,Redwood Freight - Expansion pilot,Marco Rossi,Qualification,Pipeline,84500,01.03.2027,0,0
+09.11.2026,526501550317,Steirermaschinen - Analytics suite,Marco Rossi,Contract Negotiation,Commit,172000,01.03.2027,0,0
+09.11.2026,526555636964,Taunusfinanz - Expansion pilot,Marco Rossi,Contract Negotiation,Commit,94500,01.03.2027,0,0
+09.11.2026,526457399495,Ticinologistik - Enterprise licence,Marco Rossi,Qualification,Pipeline,185000,01.03.2027,0,0
+09.11.2026,526491627763,Toggeninvest - Data migration,Marco Rossi,Solution Validation,Best case,73000,01.03.2027,0,0
+09.11.2026,526553573562,Traunsoft - Forecasting module,Marco Rossi,Discovery,Best case,154000,01.03.2027,0,0
+09.11.2026,526471824602,Wallismech - Process automation,Marco Rossi,Qualification,Pipeline,125500,01.03.2027,0,0
+09.11.2026,526548526281,Hansamech - Platform rollout,Marco Rossi,Qualification,Pipeline,96500,10.03.2027,0,0
+09.11.2026,526495027406,Padana Logistica - Integration project,Marco Rossi,Qualification,Pipeline,137000,22.03.2027,0,0
+09.11.2026,526523174109,Etna Trasporti - Integration project,Marco Rossi,Discovery,Pipeline,239500,24.03.2027,0,0
+09.11.2026,526555636963,Hudson Machinery - Forecasting module,Marco Rossi,Discovery,Pipeline,82000,26.03.2027,0,0
+09.11.2026,526495027408,Brenta Macchine - Planning suite,Marco Rossi,Discovery,Pipeline,74000,31.03.2027,1,181
+09.11.2026,526446642418,Grazerinvest - Platform rollout,Marco Rossi,Qualification,Pipeline,81500,31.03.2027,0,0
+09.11.2026,526582522098,Kärntnerwerke - Planning suite,Marco Rossi,Qualification,Pipeline,57000,31.03.2027,0,0
+09.11.2026,526524962022,Lemaniasoft - Integration project,Marco Rossi,Qualification,Pipeline,142500,31.03.2027,0,0
+09.11.2026,526501550316,Thames Engineering - Analytics suite,Marco Rossi,Qualification,Pipeline,115500,31.03.2027,0,0
+09.11.2026,526631829710,Kingsbridge Logistics - Enterprise licence,Marco Rossi,Discovery,Pipeline,71000,04.04.2027,1,171
+09.11.2026,526482619632,Kingsbridge Partners - Enterprise licence,Marco Rossi,Qualification,Pipeline,137000,06.04.2027,0,0
+09.11.2026,526531935464,Bodenseecargo - Pricing engine,Marco Rossi,Qualification,Pipeline,126000,08.04.2027,0,0
+09.11.2026,526551952578,Dolomiti Capitale - Forecasting module,Marco Rossi,Discovery,Best case,66000,08.04.2027,1,168
+09.11.2026,526489826531,Donaulogistik - Process automation,Marco Rossi,Qualification,Pipeline,120500,30.04.2027,0,0
+09.11.2026,526486285501,Seelandsoft - Process automation,Marco Rossi,Discovery,Best case,105000,30.04.2027,0,0
+09.11.2026,526623352043,Seelandtechnik - Platform rollout,Marco Rossi,Qualification,Pipeline,81000,30.04.2027,0,0
