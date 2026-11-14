@@ -144,7 +144,7 @@ def talking_box(points):
     return box(f'<div style="font-weight:bold;">Talking points for the call</div>{items}', BLUE)
 
 
-def rep_block(r, points):
+def rep_block(r, points, slide=False):
     first = r["rep"].split()[0]
     conc = r["concentration"]
     landing_pct = r["expected_landing_pct"] or 0
@@ -179,10 +179,10 @@ def rep_block(r, points):
 
     if r["top3_to_discuss"]:
         html += [sec("Top deals to discuss"), top_deals(r["top3_to_discuss"])]
-    if r["flagged_deals"]:
+    if r["flagged_deals"] and not slide:
         html.append(f'<div style="{FONT}font-size:12px;color:{MUTED};padding-top:4px;">All '
                     f'{len(r["flagged_deals"])} flagged deals for {escape(first)} are in the appendix below.</div>')
-    if points:
+    if points and not slide:
         html.append(talking_box(points))
     html.append("</div>")
     return "".join(html)
@@ -256,6 +256,20 @@ def render(b, talking_points=None, check=None):
             f'</td></tr></table></td></tr></table></body></html>')
 
 
+def render_slide(b, rep):
+    """One rep only, for a presentation slide: no team row, talking points, appendix, footer or TEST banner."""
+    r = next(x for x in b["reps"] if x["rep"] == rep)
+    q = b["quarter"].split()[-1]
+    header = (f'<div style="{FONT}font-size:13px;color:{MUTED};line-height:1.7;"><b style="color:{TEXT};">{q} forecast brief'
+              f' · week of {b["as_of"]}</b> · {b["days_left"]} days left in {q}</div>')
+    body = rep_block(r, None, slide=True).replace(f"border-top:1px solid {STRONG};margin-top:16px;", "margin-top:4px;", 1)
+    return (f'<!DOCTYPE html><html><head><meta charset="utf-8"></head><body style="margin:0;padding:0;">'
+            f'<table {TABLE} bgcolor="{PAGE}"><tr><td bgcolor="{PAGE}" style="padding:16px;">'
+            f'<table {TABLE} style="border:1px solid {BORDER};border-radius:12px;"><tr><td bgcolor="{CARD}" '
+            f'style="padding:16px 20px;border-radius:12px;">{header}{body}</td></tr></table>'
+            f'</td></tr></table></body></html>')
+
+
 def main(argv=None):
     """python3 render_email.py --brief brief.json [--talking-points tp.json] --html email.html"""
     import argparse
@@ -265,6 +279,7 @@ def main(argv=None):
     ap.add_argument("--talking-points", help='JSON: {"Anna Keller": ["...", "..."], ...}')
     ap.add_argument("--html", default="email.html")
     ap.add_argument("--check", help="answer-key check result shown in the TEST banner, e.g. PASS")
+    ap.add_argument("--slide", metavar="REP", help="render only this rep as a slide image source (no talking points/footer)")
     a = ap.parse_args(argv)
     with open(a.brief, encoding="utf-8") as fh:
         b = json.load(fh)
@@ -273,6 +288,6 @@ def main(argv=None):
         with open(a.talking_points, encoding="utf-8") as fh:
             tp = json.load(fh)
     with open(a.html, "w", encoding="utf-8") as fh:
-        fh.write(render(b, tp, a.check))
+        fh.write(render_slide(b, a.slide) if a.slide else render(b, tp, a.check))
     print(subject(b))
     return 0

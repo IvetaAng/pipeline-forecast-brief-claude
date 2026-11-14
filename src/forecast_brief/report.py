@@ -20,13 +20,14 @@ def to_markdown(b):
     for r in b["reps"]:
         c, bc, p = r["coverage"]
         conc = r["concentration"]
+        top3_txt = ", ".join(f"{t['deal']} {t['amount'] // 1000}k" for t in conc["top3"])
         L += [f"## {r['rep']}", "",
               f"- Quota {_k(r['quota'])}, won {_k(r['won'])} ({r['bookings_pct']}%: "
               f"{', '.join(w['deal'] for w in r['won_deals'])}), remaining {_k(r['remaining'])}",
               f"- Coverage on remaining: Commit {_k(c['amount'])} = {c['x']}×, Best case {_k(bc['amount'])} = {bc['x']}×, "
               f"Pipeline {_k(p['amount'])} = {p['x']}× ({p['deals']} deals)",
               f"- Expected landing (won + Commit): {_k(r['expected_landing'])} = {r['expected_landing_pct']}% of quota",
-              f"- Top 3 of Best case: {conc['pct']}% ({', '.join(f'{t['deal']} {t['amount'] // 1000}k' for t in conc['top3'])}) "
+              f"- Top 3 of Best case: {conc['pct']}% ({top3_txt}) "
               f"→ concentration flag: {'YES' if conc['flag'] else 'no'}",
               f"- Q4 pipeline {_k(r['pipeline_last_week'])} → {_k(r['pipeline_now'])}: " +
               ", ".join(f"{n} {v / 1000:+,.0f}k" for n, v in r["waterfall"].items()),
